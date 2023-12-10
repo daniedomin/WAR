@@ -1,48 +1,20 @@
 class Card {
     constructor(rank, suit, value) {
-    this.rank = rank;
-    this.suit = suit;
-    this.value = value;
-
-    }
-
-}
-
-class Deck {
-constructor() {
-    this.cards = this.generateDeck();
-}
-
-generateDeck() {
-    const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
-    const suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
-    const deck = [];
-
-    for (const suit of suits) {
-        for (const rank of ranks) {
-            let value = ranks.indexOf (rank) +2 // assign values from 2 to 14 (ace as 14)
-            deck.push(new Card(rank ,suit, value));
-        }
-    }
-    return deck;
-}
-shuffle() {
-    for (let i= this.cards.length - 1; i> 0; i --) {
-        const j = Math.floor(Math.randiom() * (i+1));
-        [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
-    }
-}
-
-dealCard() {
-    return this.cards.pop();
+        this.rank = rank;
+        this.suit = suit;
+        this.value = value;
   }
 }
 
 class Player {
-    constructor (name) {
+    constructor(name) {
         this.name = name;
-        this.hand = [];
         this.score = 0;
+        this.hand = [];
+    }
+
+    addToHand(card) {
+        this.hand.push(card);
     }
 
     playCard() {
@@ -54,45 +26,57 @@ class Player {
     }
     
     incrementScore() {
-        this.score += 1;
+        this.score++;
     }
 }
 
-// Game
+class Game {
+    constructor() {
+        this.player1 = new Player("Player 1");
+        this.player2 = new Player("Player 2");
+    }
 
-const deck = new Deck();
-deck.shuffle();
+    prepareGame() {
+        let deck = [];
+        let suits = ['Hearts', 'Diamonds', 'Clubs', 'Spades'];
+        let ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 
+        for (let x = 0; x < ranks.length; x++) {
+            for (let s = 0; s < suits.length; s++) {
+                let card = new Card(ranks[x], suits[s], x + 2);
+                deck.push(card);
+            }
+        }
 
-const player1 = new Player ("Player 1");
-const player2 = new Player("Player 2");
+        for (let i = deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [deck[i], deck[j]] = [deck[j], deck[i]];
+        }
 
+        this.player1.hand = deck.splice(0, 26);
+        this.player2.hand = deck.splice(0, 26);
+    }
 
-// deal 26 cards to each player
-for (let i = 0; i< 26; i++) {
-    player1.addToHand(deck.dealCard());
-    player2.addToHand(deck.dealCard());
-}
+    playGame() {
+        let p1 = this.player1;
+        let p2 = this.player2;
 
-//Play the rounds
-for (let round = 0; round < 26; round++) {
-    const card1 = player1.playCard();
-    const card2 = player2.playCard();
-}
+        for (let x = 0; x < p1.hand.length; x++) {
+            const card1 = p1.playCard();
+            const card2 = p2.playCard();
 
+            console.log(`Round ${x + 1}: ${p1.name} plays ${card1.rank} of ${card1.suit}, ${p2.name} plays ${card2.rank} of ${card2.suit}`);
 
-//display round result
-console.log(`Round ${round + 1}: ${player1.name} plays ${card1.rank} of ${card1.suit}, ${player2.name} plays ${card2.rank} of ${card2.suit}`) ;
+            if (card1.value > card2.value) {
+                p1.incrementScore();
+                console.log(`${p1.name} wins the round!`);
+            } else if (card1.value < card2.value) {
+                p2.incrementScore();
+                console.log(`${p2.name} wins the round!`);
+            }
+        }
 
-if (card1.value > card2.value) {
-    player1.incrememntScore()
-    console.log(`${player.name} wins the round!`);
-} else if (card1.value < card2.value) {
-    player2.incrementScore();
-    console.log(`${player2.name} wins the round!`);
-} 
-
-
+        console.log(`Final Scores - ${p1.name}: ${p1.score}, ${p2.name}: ${p2.score}`);
 
 //display final scores and declare the winner
 console.log(`Final Scores - ${player1.name}: ${player1.score}, ${player2.name}: ${player2.score}`);
@@ -103,4 +87,10 @@ if (player1.score > player2.score) {
 } else {
     console.log("The game is a tie!");
   }
-  
+    }
+}
+
+
+
+
+let war = new Game();
