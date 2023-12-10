@@ -32,8 +32,16 @@ class Player {
 
 class Game {
     constructor() {
-        this.player1 = new Player("Player 1");
-        this.player2 = new Player("Player 2");
+        this.player1 = {
+            score:0,
+            hand:[]
+        },
+        this.player2 = {
+            score:0,
+            hand:[]
+        }
+        this.prepareGame();
+        this.playGame();
     }
 
     prepareGame() {
@@ -75,6 +83,7 @@ class Game {
                 console.log(`${p2.name} wins the round!`);
             }
         }
+        let war = new Game();
 
         console.log(`Final Scores - ${p1.name}: ${p1.score}, ${p2.name}: ${p2.score}`);
 
@@ -89,8 +98,3 @@ if (player1.score > player2.score) {
   }
     }
 }
-
-
-
-
-let war = new Game();
