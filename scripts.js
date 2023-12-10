@@ -32,11 +32,11 @@ class Player {
 
 class Game {
     constructor() {
-        this.player1 = {
+        this.p1 = {
             score:0,
             hand:[]
         },
-        this.player2 = {
+        this.p2 = {
             score:0,
             hand:[]
         }
@@ -61,8 +61,8 @@ class Game {
             [deck[i], deck[j]] = [deck[j], deck[i]];
         }
 
-        this.player1.hand = deck.splice(0, 26);
-        this.player2.hand = deck.splice(0, 26);
+        this.p1.hand = deck.splice(0, 26);
+        this.p2.hand = deck.splice(0, 26);
     }
 
     playGame() {
@@ -83,16 +83,19 @@ class Game {
                 console.log(`${p2.name} wins the round!`);
             }
         }
-        let war = new Game();
 
-        console.log(`Final Scores - ${p1.name}: ${p1.score}, ${p2.name}: ${p2.score}`);
+
+        let war = new Game();
+        
+
+        
 
 //display final scores and declare the winner
-console.log(`Final Scores - ${player1.name}: ${player1.score}, ${player2.name}: ${player2.score}`);
-if (player1.score > player2.score) {
-    console.log(`${player1.name} wins the game!`);
-  } else if (player1.score < player2.score) {
-    console.log(`${player2.name} wins the game!`);
+console.log(`Final Scores - ${p1.name}: ${p1.score}, ${p2.name}: ${p2.score}`);
+if (p1.score > p2.score) {
+    console.log(`${p1.name} wins the game!`);
+  } else if (p1.score < p2.score) {
+    console.log(`${p2.name} wins the game!`);
 } else {
     console.log("The game is a tie!");
   }
